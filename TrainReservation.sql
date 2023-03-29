@@ -1,7 +1,7 @@
 # 기차 예약 데이터베이스 생성 
 CREATE DATABASE train_reservation;
 USE train_reservation;
- 
+  
 # 가격 테이블 생성 
 # 역과 역사이의 거리에 따라 금액이 책정되는것.(원래 기차종류까지 추가) 
 CREATE TABLE Cost ( 

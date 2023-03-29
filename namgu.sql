@@ -23,7 +23,7 @@ SELECT * FROM namgu WHERE 세대수 BETWEEN 5000 AND 10000;
 
 SELECT * FROM namgu WHERE 통 IN (21, 22, 23);
 SELECT * FROM namgu WHERE 통 NOT IN (21, 22, 23);
-
+ 
 # Namgu 테이블에서
 # 인구수가 10000명 이상이면서 18세이상인구수 12000명 이하인 레코드를 검색
 SELECT * FROM namgu WHERE 인구수 >= 10000 AND 18세이상인구수<= 12000;

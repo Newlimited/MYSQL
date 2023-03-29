@@ -6,7 +6,7 @@
 구문 뒤에는 ;(세미클론) 붙여야 함
 대소문자 구분 x
 but 테이블 명과 필드의 이름은 대소문자 구분함
-*/
+*/ 
 /* DDL(데이터 정의어)
  데이터 베이스 혹은 테이블(뷰, 인덱스, 프로시저...)을 생성, 수정, 삭제 할 때
  사용하는 SQL문
@@ -152,5 +152,102 @@ FROM
     name
 FROM
     Custom;
-        
     
+# 연산자
+# 비교연산
+
+# BETWEEN a AND b
+# a보다 크거나 같으면서 b 보다 작거나 같으면 true를 반환함 ) a<= x <= b     
+SELECT * FROM Custom
+WHERE age BETWEEN 10 AND 20;
+
+# IN()
+# 인수로 전달된 값과 동일한 값이 하나라도 존재한다면 true를 반환
+SELECT * FROM custom
+WHERE name IN ('John Doe', 'Michle', 'James');
+# 풀어쓰면
+# SELECT * FROM Custom
+# WHERE name = 'John Doe'
+# OR name = 'Micle'
+# OR name = 'James';
+
+# IS
+# 비교대상이 Boolean 형태일 때 사용하는 비교 연산자
+SELECT * FROM Custom
+WHERE accept_marketing IS true;
+
+# IS NULL
+# 비교대상이 Null 이면 true를 반환
+SELECT * FROM Custom
+WHERE email IS NULL;
+
+# LIKE
+# 문자열의 패턴을 비교하여 동일한 패턴을 가지고 있는 문자열이면 true를 반환
+
+# 와일드 카드
+# %  : 0개 이상의 패턴
+# _  : 1개의 패턴 (정확한 값을 찾을 때 사용)
+SELECT * FROM Custom                        
+WHERE email LIKE '%gmail%';
+
+# Constraints (제약조건)
+# RDBMS에거 삽입, 수정, 삭제에 대해서 무결성을 보장해주는 조건 
+
+# NOT NULL
+# 입력 혹은 수정 작업에 있어서 해당 필드에 Null이 올 수 없도록 하는 제약조건
+# 제약조건
+
+#create 문에서 작성 예시
+CREATE TABLE NotnullTable (
+    notnull_field INT NOT NULL
+);
+
+#Alter 문에서 작성     
+# Alter로 NOT NULL 제약조건을 추가할 땐 원래 존재하는 레코드에서 
+# 해당 필드의 데이터가 Null이 존재하면 안됨
+ CREATE TABLE NotnullTable (
+    notnull_field INT
+);
+ALTER TABLE NotnullTable1
+MODIFY COLUMN notnull_field INT NOT NULL;
+
+
+#Default
+# 입력 작업아세ㅓ 해당 필드의 값이 들어오지 않으면 기본값으로 지정 해주는 제약조건
+
+#CREATE 문으로 설정
+CREATE TABLE defaultTable1 (
+default_table INT DEFAULT 1
+);
+
+#ALTER 문으로 설정
+CREATE TABLE defaultTable2(
+default_field INT
+);
+ALTER TABLE defaultTable2
+MODIFY COLUMN default_field INT DEFAULT 1;
+  
+# UNIQUE
+# 삽입, 수정 작업에서 해당 제약조건이 걸려있는 
+#필드의 데이터에 대해 중복을 허용하지않는 제약조건
+
+#CREATE 문으로
+CREATE TABLE Unique_Table1(
+unique_field INT UNIQUE
+);
+CREATE TABLE Unique_table2(
+unique_field INT,
+CONSTRAINT unique_key_1 UNIQUE (unique_field)
+);
+
+#Alter 문으로
+CREATE TABLE Unique_table3(
+unique_field INT
+);
+ALTER TABLE Unique_Table3 MODIFY unique_field INT UNIQUE;
+
+CREATE TABLE Unique_Table4 (
+    unique_filed INT
+);
+Alter table Unique_Table4
+add constraint unique_key_1 unique (unique_field);
