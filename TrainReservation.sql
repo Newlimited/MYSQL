@@ -5,8 +5,8 @@ USE train_reservation;
 # 가격 테이블 생성 
 # 역과 역사이의 거리에 따라 금액이 책정되는것.(원래 기차종류까지 추가) 
 CREATE TABLE Cost ( 
-    departure_station VARCHAR(50) NOT NULL,
-    arrival_station VARCHAR(50) NOT NULL,
+    departure_station INT NOT NULL,
+    arrival_station INT NOT NULL,
     amount INT NOT NULL
 );
 # departure 와 arrival 이 Cost랑 Train에 같이 있다 . 중복되어있음
@@ -25,7 +25,7 @@ CREATE TABLE Train (
 CREATE TABLE Station (
     station_number INT AUTO_INCREMENT PRIMARY KEY,
     station_nume VARCHAR(50) NOT NULL,
-    address TEXT NOT NULL UNIQUE,
+    address VARCHAR(500) NOT NULL UNIQUE,
     tel_number VARCHAR(15) NOT NULL UNIQUE
 );
 /*	관계를 필드로 표현할지, 테이블로 표현할지 관계정도에 따라 다름
@@ -59,3 +59,32 @@ CREATE TABLE Station (
  /* 3개를 primary key 로 잡아서 쓰기도한다. 
  하지만 복잡하다..... */
  
+ # 제약조건을 추가할거임
+ ALTER TABLE Cost
+ ADD CONSTRAINT cost_primary_key
+ PRIMARY KEY (departure_station, arrival_station);
+ 
+ ALTER TABLE Cost
+ ADD CONSTRAINT cost_foreign_key_1
+ FOREIGN KEY (departure_station)
+ REFERENCES Station (station_number);
+ 
+ ALTER TABLE Cost
+ ADD CONSTRAINT cost_foreign_key_2
+ FOREIGN KEY (arrival_station)
+ REFERENCES Station (station_number);
+
+#제약조건 추가
+ALTER TABLE STOP_STATION
+ADD CONSTRAINT stop_station_primary_key
+PRIMARY KEY (Station_number, train_number);
+
+ALTER TABLE STOP_STATION
+ADD CONSTRAINT stop_station_foreign_key_1
+FOREIGN KEY (station_number)
+REFERENCES STATION (station_number);
+
+ALTER TABLE STOP_STATION
+ADD CONSTRAINT stop_station_foreign_key_2
+FOREIGN KEY (train_number)
+REFERENCES TRAIN (train_number)
