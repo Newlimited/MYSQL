@@ -29,7 +29,7 @@ CREATE TABLE 테이블명(
 수정을 하게 되면 하위부분이든 다른부분까지 영향이 가기 때문에 복잡해지거나 정상작동이 안 될 수도 있다. */
 CREATE TABLE Custom (
     id INT PRIMARY KEY,
-    name VARCHARACTER(20) NOT NULL,
+    name VARCHAR(20) NOT NULL,
     email VARCHAR(30) UNIQUE,
     age INT,
     address TEXT,
@@ -86,7 +86,7 @@ INSERT INTO Custom
 VALUES(10, 'Michle', 'asdf@asdf.com', 30, 'This is address', true);
 
 INSERT INTO Custom
-VALUES (11, 'lascls159@gmail.com','jihoon', 31, 'Busan', true);
+VALUES (12, 'lascls159@gmail.com','jihoon', 31, 'Busan', true);
 # 타입이 달라서 안들어감 만약 타입이 같으면 들어가버림
 # 그래서 필드명 없이 데이터값을 넣을 땐 위치 잘 지정 해야됨. 
 
@@ -133,7 +133,7 @@ WHERE
  
  SELECT 필드명1, 필드명2, ... FROM 테이블명;*/
 SELECT 
-    id, name;
+    id, name FROM Custom;
     # SELECT * FROM 테이블명;
     SELECT * FROM Custom;
     
@@ -206,7 +206,7 @@ CREATE TABLE NotnullTable (
 # Alter로 NOT NULL 제약조건을 추가할 땐 원래 존재하는 레코드에서 
 # 해당 필드의 데이터가 Null이 존재하면 안됨
  CREATE TABLE NotnullTable (
-    notnull_field INT
+    notnull_field INT 
 );
 ALTER TABLE NotnullTable1
 MODIFY COLUMN notnull_field INT NOT NULL;
@@ -307,6 +307,112 @@ foreign_field2 INT
 
 ALTER TABLE Foreign_Table2
 ADD constraint foreign_key1
-FOREIGN KEY (foreign_field)
+FOREIGN KEY (foreign_field2)
 REFERENCES Referenced_Table (primary_key);
+-------------------------------------------------------------------------
+# Join을 하기 위해서 테이블을 하나 만듬
+CREATE TABLE Room(
+    room_number VARCHAR(4) PRIMARY KEY,
+    room_type VARCHAR(20) NOT NULL,
+    room_amount INT NOT NULL,
+    custom_id INT,
+    #(null)허용, 지금은 임시로 그냥 한거라서 관계가 맞지 않음. 하려면 따로 만들어야댐 
+    CONSTRAINT Room_Foreign_key FOREIGN KEY (custom_id)
+        REFERENCES Custom(id)
+);
+# 값 넣음
+INSERT INTO Room VALUES ('1001','비지니스',200,1);
+INSERT INTO Room VALUES ('1203','VIP',1000,10);
+INSERT INTO Room VALUES ('1801','VIP',1000,12);
 
+INSERT INTO Room VALUES ('1002','비지니스',200,1);
+INSERT INTO Room VALUES ('1204','VIP',1000,10);
+INSERT INTO Room VALUES ('1802','VIP',1000,12);
+
+INSERT INTO Room VALUES ('1003','비지니스',200,null);
+INSERT INTO Room VALUES ('1205','VIP',1000,null);
+INSERT INTO Room VALUES ('1803','VIP',1000,null);
+
+SELECT * FROM Room ;
+
+# JOIN
+# 여러개의 테이블에서 관계로 연결되어 있는 표현을 하나로 검색하도록 해주는 쿼리
+
+#INNER JOIN 
+# FROM 첫번째테이블 INNER JOIN 두번째테이블 ON 조건
+# FROM 첫번째테이블 JOIN 두번째테이블 ON 조건
+# FROM 첫번째테이블, 두번째테이블 WHERE 조건
+SELECT R.room_number AS '방번호', C.name AS '고객이름'
+FROM Room R INNER JOIN Custom C 
+ON C.id = R.custom_id;
+
+SELECT * FROM  Room JOIN  Custom;
+
+SELECT *
+FROM Room, Custom
+WHERE Room.custom_id = Custom.id;
+
+# LEFT JOIN
+# FROM 첫번째테이블 LEFT JOIN 두번째테이블 ON 조건
+
+SELECT * 
+FROM Room LEFT JOIN Custom
+ON Room.custom_id = Custom.id;
+
+INSERT INTO Custom
+VALUES (20, 'David', 'David@gmail.com' , 30, 'New york', 1);
+# RIGHT JOIN
+# FROM 첫번째테이블 RIGHT JOIN 두번째테이블 ON 조건
+
+SELECT *
+FROM Room RIGHT JOIN Custom
+ON Room.custom_id = Custom.id;
+
+# Sub Query
+# 복잡한 JOIN 문을 조금더 간결하게 사용할 수 있도록 해주는 쿼리문
+# SELECT , INSERT, UPDATE, DELETE, SET, DO 에서 사용가능
+# FROM ,WHERE 절에서 쓸 수있다. 
+
+# WHERE절 사용
+SELECT * 
+FROM Room
+WHERE custom_id IN ( # 조건 판단을 잘해줘야함. 
+SELECT id
+FROM Custom
+WHERE name = 'Michle' # 중복되는값이 있는지.....
+);
+
+# IN 연산 <특정한 계열의 값을 있을 때 하나라도 해당값이 존재한다면 반환시키는 연산>
+# IN 연산 + LIKE 쓸때 서브쿼리를 써주면 편하다
+select * 
+FROM Custom 
+WHERE id in (
+SELECT id
+FROM Custom
+WHERE name LIKE 'M%' 
+OR name LIKE 'D%'
+);
+
+# FROM 절에서 사용
+SELECT CustomID 
+FROM(
+SELECT id AS CustomId, email AS CustomEmail 
+FROM Custom
+) C; # 무조건 별칭을 지정해줘야함 FROM절에서쓸때 . 그리고 반환되는거를 SELECT에 넣어줘야함
+
+SELECT id AS CustomId, email AS CustomEmail 
+FROM Custom ;
+
+# ORDER BY(정렬)
+# 특정필드를 기준으로 오름차순 내림차순 정렬하여 결과를 반환
+# DESC 내림차순
+SELECT *
+FROM namgu;
+
+SELECT *
+FROM namgu
+ORDER BY 세대수 DESC;
+
+# 오름차순 ASC
+SELECT * FROM Namgu
+ORDER BY 통 DESC, 반 ASC;
