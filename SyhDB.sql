@@ -298,7 +298,7 @@ CREATE TABLE Foreign_Table1 (
     foreign_field INT,
     CONSTRAINT foreign_key_1 FOREIGN KEY (foreign_field)
         REFERENCES Referenced_Table (primary_key)
-);
+); 	
 
 # ALTER
 CREATE TABLE Foreign_Table2(
