@@ -433,7 +433,7 @@ ON C.id = R.custom_id;
 SELECT * FROM JOIN_RESULT
 WHERE 방번호= 1002;
 
-# ALTER VIEW 뷰이름 AS
+# ALTER VIEW 뷰이름 AS  
 # SELECT 필드이름~~ FROM 테이블
 
 ALTER VIEW JOIN_RESULT AS
