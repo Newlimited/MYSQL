@@ -471,10 +471,4 @@ ON namgu (세대수, 인구수, 통);
 CREATE UNIQUE INDEX seadeasu_unique_index
 on namgu (세대수);
 
-namgu
-
-
-
-
-
 

@@ -44,3 +44,10 @@ SELECT * FROM namgu WHERE 인구수 >= 10000 AND (18세이상인구수 <= 12000 
 SELECT * FROM namgu WHERE (인구수 >= 10000 AND 18세이상인구수 <= 12000 )OR 반 >= 100;
 
 # 테이블 직접 만들어보거나 데이터 찾아보고.... 뭐 
+
+SELECT count(면적), max(세대수), min(세대수) #count , max , min 내장함수
+# count는 전체 갯수 
+FROM Namgu;
+
+SELECT * FROM namgu;
+
