@@ -470,5 +470,31 @@ ON namgu (세대수, 인구수, 통);
 
 CREATE UNIQUE INDEX seadeasu_unique_index
 on namgu (세대수);
+---------------------------------------------------------
+# DCL
+# Data Control Language
+# 권한 제어 및 트랜잭션 제어를 담당하는 쿼리문의 집합
+
+# 사용자 권한 
+CREATE USER 'Developer_user'@'%' IDENTIFIED BY 'P!ssw0rd'; 
+
+# GRANT
+#사용자에게 권한을 부여하는 쿼리문 
+# GRANT 권한1, ... ON 데이터 베이스.테이블 TO 사용자이름@호스트;
+GRANT CREATE, INSERT, UPDATE, SELECT, DELETE 
+ON HOTEL.* TO 'Developer_user'@'%';
+# CREATE  테이블 생성만,필드 
+
+#REVOKE
+# 사용자로부터 권한을 회수하는 쿼리문 
+# REVOKE 권한 1, ... ON 데이터베이스.테이블 FROM 사용자이름@호스트;
+REVOKE CREATE ON HOTEL.* FROM 'Developer_user'@'%';
+
+# COMMIT 
+# 트랜잭션을 영구적으로 반영하는 쿼리문
+
+# ROLLBACK
+# 현재 트랜잭션을 취소하는 쿼리문 
+# AUTOCOMMIT 풀려면 Edit 에서 SQL EXcustion에 new connection  use auto commit mode 체크를 풀면됨 
 
 
